@@ -1,0 +1,88 @@
+{
+  "name": "abnt-citation",
+  "version": "1.0.0",
+  "description": "Brazilian ABNT NBR 10520:2023 citation formatter - correctly handles person names (Title Case) vs institutional names (UPPERCASE). Extracted from CiteMe.",
+  "keywords": [
+    "abnt",
+    "citation",
+    "brazil",
+    "brazilian",
+    "academic",
+    "nbr-10520",
+    "nbr-6023",
+    "bibliography",
+    "reference",
+    "csl",
+    "citation-js",
+    "zotero",
+    "mendeley",
+    "citeme",
+    "tcc",
+    "monografia",
+    "dissertacao",
+    "tese",
+    "artigo",
+    "normas-abnt",
+    "formatacao",
+    "referencias",
+    "citacoes",
+    "universidade",
+    "academico"
+  ],
+  "author": "CiteMe <contato@citeme.com.br>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/citeme-app/abnt-citation"
+  },
+  "homepage": "https://citeme.com.br",
+  "bugs": {
+    "url": "https://github.com/citeme-app/abnt-citation/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://citeme.com.br"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.en.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run test"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0",
+    "vitest": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false
+}
