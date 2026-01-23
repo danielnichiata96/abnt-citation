@@ -1,6 +1,6 @@
 {
   "name": "abnt-citation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Brazilian ABNT NBR 10520:2023 citation formatter - correctly handles person names (Title Case) vs institutional names (UPPERCASE). Extracted from CiteMe.",
   "keywords": [
     "abnt",
@@ -29,19 +29,19 @@
     "universidade",
     "academico"
   ],
-  "author": "CiteMe <contato@citeme.com.br>",
+  "author": "CiteMe <contato@citeme.app>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/citeme-app/abnt-citation"
+    "url": "https://github.com/danielciteme/abnt-citation"
   },
-  "homepage": "https://citeme.com.br",
+  "homepage": "https://citeme.app",
   "bugs": {
-    "url": "https://github.com/citeme-app/abnt-citation/issues"
+    "url": "https://github.com/danielciteme/abnt-citation/issues"
   },
   "funding": {
     "type": "individual",
-    "url": "https://citeme.com.br"
+    "url": "https://citeme.app"
   },
   "type": "module",
   "main": "./dist/index.cjs",

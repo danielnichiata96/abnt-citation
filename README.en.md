@@ -2,11 +2,11 @@
 
 [![npm version](https://badge.fury.io/js/abnt-citation.svg)](https://www.npmjs.com/package/abnt-citation)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Made by CiteMe](https://img.shields.io/badge/Made%20by-CiteMe-0d9488)](https://citeme.com.br)
+[![Made by CiteMe](https://img.shields.io/badge/Made%20by-CiteMe-0d9488)](https://citeme.app)
 
 > The first Brazilian academic citation parser that correctly follows ABNT NBR 10520:2023.
 
-**This package was extracted from [CiteMe](https://citeme.com.br)** - Brazil's most complete academic citation manager.
+**This package was extracted from [CiteMe](https://citeme.app)** - Brazil's most complete academic citation manager.
 
 [Versao em Portugues](./README.md)
 
@@ -14,14 +14,14 @@
 
 ## Want automatic formatting without code?
 
-**[CiteMe](https://citeme.com.br)** formats your references automatically in 14+ styles (ABNT, APA, Vancouver, etc.) - no installation needed:
+**[CiteMe](https://citeme.app)** formats your references automatically in 14+ styles (ABNT, APA, Vancouver, etc.) - no installation needed:
 
 - Automatic search by DOI, ISBN or title
 - Lattes CV import (Brazilian academic CV)
 - Export to Word, BibTeX, RIS
 - 100% free for students
 
-[Try CiteMe for free](https://citeme.com.br)
+[Try CiteMe for free](https://citeme.app)
 
 ---
 
@@ -240,7 +240,7 @@ const formatted = postProcessABNT2023(citation, true);
 
 ## Used in Production
 
-This package powers the ABNT 2023 formatting engine of **[CiteMe](https://citeme.com.br)**, used by thousands of Brazilian students.
+This package powers the ABNT 2023 formatting engine of **[CiteMe](https://citeme.app)**, used by thousands of Brazilian students.
 
 ## Contributing
 
@@ -248,4 +248,4 @@ Contributions are welcome! Please open an issue or pull request on [GitHub](http
 
 ## License
 
-MIT - Built with love by the [CiteMe](https://citeme.com.br) team
+MIT - Built with love by the [CiteMe](https://citeme.app) team

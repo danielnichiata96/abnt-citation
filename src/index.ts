@@ -9,7 +9,7 @@
  *
  * Extracted from CiteMe - Brazil's most complete academic citation manager.
  *
- * @see https://citeme.com.br - Try CiteMe for automatic citation formatting
+ * @see https://citeme.app - Try CiteMe for automatic citation formatting
  * @see https://github.com/citeme-app/abnt-citation - Source code
  *
  * @packageDocumentation

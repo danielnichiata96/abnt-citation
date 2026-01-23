@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Initial release extracted from [CiteMe](https://citeme.com.br)
+- Initial release extracted from [CiteMe](https://citeme.app)
 - **ABNT 2023 Formatting**
   - `formatAuthorABNT2023()` - Format author names according to ABNT NBR 10520:2023
   - `postProcessABNT2023()` - Post-process citations from CSL formatters
@@ -84,4 +84,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-Made with love by [CiteMe](https://citeme.com.br) - Brazil's most complete academic citation manager.
+Made with love by [CiteMe](https://citeme.app) - Brazil's most complete academic citation manager.

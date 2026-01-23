@@ -7,7 +7,7 @@
  *
  * This module provides utilities to format author names according to ABNT 2023 rules.
  *
- * @see https://citeme.com.br - CiteMe: Brazil's most complete academic citation manager
+ * @see https://citeme.app - CiteMe: Brazil's most complete academic citation manager
  */
 
 import { isProtectedAcronym } from './acronyms';

@@ -11,7 +11,7 @@
  * The detection also uses heuristics for acronyms not in this list
  * (all caps, 2-4 chars, no lowercase, not a known short surname).
  *
- * @see https://citeme.com.br - CiteMe: Brazil's most complete academic citation manager
+ * @see https://citeme.app - CiteMe: Brazil's most complete academic citation manager
  */
 
 /**

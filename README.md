@@ -2,11 +2,11 @@
 
 [![npm version](https://badge.fury.io/js/abnt-citation.svg)](https://www.npmjs.com/package/abnt-citation)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Made by CiteMe](https://img.shields.io/badge/Made%20by-CiteMe-0d9488)](https://citeme.com.br)
+[![Made by CiteMe](https://img.shields.io/badge/Made%20by-CiteMe-0d9488)](https://citeme.app)
 
 > O primeiro parser brasileiro de citacoes academicas que segue corretamente a ABNT NBR 10520:2023.
 
-**Este pacote foi extraido do [CiteMe](https://citeme.com.br)** - o gerenciador de citacoes academicas mais completo do Brasil.
+**Este pacote foi extraido do [CiteMe](https://citeme.app)** - o gerenciador de citacoes academicas mais completo do Brasil.
 
 [English version](./README.en.md)
 
@@ -14,14 +14,14 @@
 
 ## Quer formatacao automatica sem codigo?
 
-**[CiteMe](https://citeme.com.br)** formata suas referencias automaticamente em 14+ estilos (ABNT, APA, Vancouver, etc.) - sem precisar instalar nada:
+**[CiteMe](https://citeme.app)** formata suas referencias automaticamente em 14+ estilos (ABNT, APA, Vancouver, etc.) - sem precisar instalar nada:
 
 - Busca automatica por DOI, ISBN ou titulo
 - Importacao de curriculo Lattes
 - Exportacao para Word, BibTeX, RIS
 - 100% gratuito para estudantes
 
-[Experimente o CiteMe gratuitamente](https://citeme.com.br)
+[Experimente o CiteMe gratuitamente](https://citeme.app)
 
 ---
 
@@ -240,7 +240,7 @@ const formatted = postProcessABNT2023(citation, true);
 
 ## Usado em Producao
 
-Este pacote e o motor de formatacao ABNT 2023 do **[CiteMe](https://citeme.com.br)**, usado por milhares de estudantes brasileiros.
+Este pacote e o motor de formatacao ABNT 2023 do **[CiteMe](https://citeme.app)**, usado por milhares de estudantes brasileiros.
 
 ## Contribuindo
 
@@ -248,4 +248,4 @@ Contribuicoes sao bem-vindas! Por favor, abra uma issue ou pull request no [GitH
 
 ## Licenca
 
-MIT - Desenvolvido com carinho pelo time [CiteMe](https://citeme.com.br)
+MIT - Desenvolvido com carinho pelo time [CiteMe](https://citeme.app)
