@@ -1,6 +1,6 @@
 {
   "name": "abnt-citation",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Brazilian ABNT NBR 10520:2023 citation formatter - correctly handles person names (Title Case) vs institutional names (UPPERCASE). Extracted from CiteMe.",
   "keywords": [
     "abnt",
