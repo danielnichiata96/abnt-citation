@@ -212,6 +212,56 @@ describe('ABNT 2023 Formatter', () => {
       });
     });
 
+    describe('multi-cite in same parenthesis', () => {
+      it('handles two citations in same parenthesis', () => {
+        const input = '(SILVA, 2020; SANTOS, 2021)';
+        const expected = '(Silva, 2020; Santos, 2021)';
+        expect(postProcessABNT2023(input, true)).toBe(expected);
+      });
+
+      it('handles three citations in same parenthesis', () => {
+        const input = '(SILVA, 2019; SANTOS, 2020; OLIVEIRA, 2021)';
+        const expected = '(Silva, 2019; Santos, 2020; Oliveira, 2021)';
+        expect(postProcessABNT2023(input, true)).toBe(expected);
+      });
+
+      it('handles multi-cite with year suffixes', () => {
+        const input = '(SILVA, 2020a; SILVA, 2020b)';
+        const expected = '(Silva, 2020a; Silva, 2020b)';
+        expect(postProcessABNT2023(input, true)).toBe(expected);
+      });
+
+      it('handles multi-cite with acronyms', () => {
+        const input = '(SILVA, 2020; IBGE, 2021)';
+        const expected = '(Silva, 2020; IBGE, 2021)';
+        expect(postProcessABNT2023(input, true)).toBe(expected);
+      });
+
+      it('handles multi-cite with et al.', () => {
+        const input = '(SILVA et al., 2020; SANTOS, 2021)';
+        const expected = '(Silva *et al.*, 2020; Santos, 2021)';
+        expect(postProcessABNT2023(input, true)).toBe(expected);
+      });
+
+      it('handles multi-cite with page numbers', () => {
+        const input = '(SILVA, 2020, p. 45; SANTOS, 2021, p. 78)';
+        const expected = '(Silva, 2020, p. 45; Santos, 2021, p. 78)';
+        expect(postProcessABNT2023(input, true)).toBe(expected);
+      });
+
+      it('handles multi-cite with particles', () => {
+        const input = '(DA SILVA, 2020; DOS SANTOS, 2021)';
+        const expected = '(Da Silva, 2020; Dos Santos, 2021)';
+        expect(postProcessABNT2023(input, true)).toBe(expected);
+      });
+
+      it('handles multi-cite with hyphenated names', () => {
+        const input = '(SMITH-JONES, 2020; VILLAS-BÔAS, 2021)';
+        const expected = '(Smith-Jones, 2020; Villas-Bôas, 2021)';
+        expect(postProcessABNT2023(input, true)).toBe(expected);
+      });
+    });
+
     describe('bibliography entries', () => {
       it('formats et al. to italic in bibliography', () => {
         const input = 'SILVA, J. et al. Title of work. 2023.';
@@ -266,6 +316,34 @@ describe('ABNT 2023 Formatter', () => {
         const result = postProcessABNT2023(input, true);
         expect(result).toContain('Müller');
         expect(result).toContain('García');
+      });
+
+      it('handles Turkish characters', () => {
+        const input = '(ÖZTÜRK; YILDIRIM, 2023)';
+        const result = postProcessABNT2023(input, true);
+        expect(result).toContain('Öztürk');
+        expect(result).toContain('Yildirim');
+      });
+
+      it('handles Polish characters', () => {
+        const input = '(KOWALCZYK; WÓJCIK, 2023)';
+        const result = postProcessABNT2023(input, true);
+        expect(result).toContain('Kowalczyk');
+        expect(result).toContain('Wójcik');
+      });
+
+      it('handles Czech characters', () => {
+        const input = '(NOVÁK; DVOŘÁK, 2023)';
+        const result = postProcessABNT2023(input, true);
+        expect(result).toContain('Novák');
+        expect(result).toContain('Dvořák');
+      });
+
+      it('handles Romanian characters', () => {
+        const input = '(POPESCU; IONESCU, 2023)';
+        const result = postProcessABNT2023(input, true);
+        expect(result).toContain('Popescu');
+        expect(result).toContain('Ionescu');
       });
     });
 

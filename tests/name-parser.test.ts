@@ -357,6 +357,50 @@ describe('Brazilian Name Parser', () => {
       });
     });
 
+    describe('particle-only names (no given name)', () => {
+      it('parses "da Silva" as family-only', () => {
+        expect(parseNameToCsl('da Silva')).toEqual({
+          family: 'da Silva',
+        });
+      });
+
+      it('parses "dos Santos" as family-only', () => {
+        expect(parseNameToCsl('dos Santos')).toEqual({
+          family: 'dos Santos',
+        });
+      });
+
+      it('parses "de Souza" as family-only', () => {
+        expect(parseNameToCsl('de Souza')).toEqual({
+          family: 'de Souza',
+        });
+      });
+
+      it('parses "do Carmo" as family-only', () => {
+        expect(parseNameToCsl('do Carmo')).toEqual({
+          family: 'do Carmo',
+        });
+      });
+
+      it('parses "das Neves" as family-only', () => {
+        expect(parseNameToCsl('das Neves')).toEqual({
+          family: 'das Neves',
+        });
+      });
+
+      it('parses "da Costa e Silva" as family-only (particle + connector)', () => {
+        expect(parseNameToCsl('da Costa e Silva')).toEqual({
+          family: 'da Costa e Silva',
+        });
+      });
+
+      it('parses "dos Santos Filho" as family-only (particle + suffix)', () => {
+        expect(parseNameToCsl('dos Santos Filho')).toEqual({
+          family: 'dos Santos Filho',
+        });
+      });
+    });
+
     describe('edge cases', () => {
       it('handles empty string', () => {
         expect(parseNameToCsl('')).toEqual({

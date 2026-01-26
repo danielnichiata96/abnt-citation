@@ -125,43 +125,83 @@ export function postProcessABNT2023(citation: string, isInText: boolean): string
 
   let result = citation;
 
-  // Character class for author names:
-  // - A-Z and accented uppercase letters
-  // - Spaces, semicolons, commas (for multiple authors)
+  // Character class for author names using Unicode letter property:
+  // - \p{L} matches any Unicode letter (covers all alphabets and diacritics)
+  // - Also includes spaces, semicolons, commas (for multiple authors)
   // - Hyphens (SMITH-JONES) and apostrophes (O'BRIEN)
-  const authorChars = "A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜ\\s;,'\\-";
+  const authorChars = "\\p{L}\\s;,'\\-";
 
   // Et al. pattern - matches plain, markdown italic (*et al.*), or HTML italic (<i>/<em>)
   const etAlPattern = "(?:\\*|<(?:i|em)>)?et\\s*al\\.(?:\\*|<\\/(?:i|em)>)?";
 
   // For in-text citations, convert author surnames from ALL CAPS to Title Case
   if (isInText) {
-    // Pattern 1: Basic citations with optional page numbers and year suffix
-    // Handles: (SILVA, 2023), (SILVA, 2023a), (SILVA, 2023, p. 45), (SMITH-JONES, 2023), (O'BRIEN, 2023)
-    const basicPattern = new RegExp(
-      `\\(([${authorChars}]+?)(\\s*${etAlPattern})?,\\s*(\\d{4}[a-z]?)(,\\s*p\\.\\s*[\\d\\-–]+)?\\)`,
-      'gi'
+    // Pattern 1: Multi-cite and basic citations with optional page numbers and year suffix
+    // Handles: (SILVA, 2020; SANTOS, 2021), (SILVA, 2023), (SILVA, 2023a), (SILVA, 2023, p. 45)
+    // Each citation segment: AUTHOR [et al.], YEAR[suffix][, p. XX]
+    const citationSegment = `[${authorChars}]+?(?:\\s*${etAlPattern})?,\\s*\\d{4}[a-z]?(?:,\\s*p\\.\\s*[\\d\\-–]+)?`;
+    const multiCitePattern = new RegExp(
+      `\\((${citationSegment}(?:;\\s*${citationSegment})*)\\)`,
+      'giu' // 'u' flag enables Unicode mode for \p{L}
     );
 
-    result = result.replace(
-      basicPattern,
-      (_match, authors, etAl, year, pageRef) => {
-        const formattedAuthors = authors
-          .split(';')
-          .map((a: string) => formatAuthorABNT2023(a.trim()))
-          .join('; ');
+    result = result.replace(multiCitePattern, (_match, innerContent) => {
+      // Split citations by looking for the pattern: YEAR[suffix][page]; AUTHOR
+      // This distinguishes between:
+      // - Author separator: "SILVA; SANTOS, 2023" (one citation, two authors) - NO split
+      // - Citation separator: "SILVA, 2020; SANTOS, 2021" (two citations) - split after year
+      // The key: citation boundary has YEAR immediately before "; "
 
-        const etAlPart = etAl ? ' *et al.*' : '';
-        const pagePart = pageRef || '';
-        return `(${formattedAuthors}${etAlPart}, ${year}${pagePart})`;
+      // Use capturing split to keep the year with its citation
+      const parts = innerContent.split(/(\d{4}[a-z]?(?:,\s*p\.\s*[\d\-–]+)?)\s*;\s*/);
+
+      // Rebuild citations: parts alternate between [authors+comma, year, authors+comma, year, ...]
+      // Or for single citation: [authors+comma+year] (no split occurred)
+      const citations: string[] = [];
+      let current = '';
+      for (let j = 0; j < parts.length; j++) {
+        if (j % 2 === 0) {
+          // Authors part (or whole citation if no split)
+          current = parts[j];
+        } else {
+          // Year part - append to current and push as complete citation
+          current += parts[j];
+          citations.push(current);
+          current = '';
+        }
       }
-    );
+      // Handle any remaining content (shouldn't happen with valid input, but be safe)
+      if (current.trim()) {
+        citations.push(current);
+      }
+
+      const formattedCitations = citations.map((segment: string) => {
+        // Match: AUTHORS [et al.], YEAR[suffix][, p. XX]
+        const segmentMatch = segment.match(
+          new RegExp(`^([${authorChars}]+?)(\\s*${etAlPattern})?,\\s*(\\d{4}[a-z]?)(,\\s*p\\.\\s*[\\d\\-–]+)?$`, 'iu')
+        );
+
+        if (segmentMatch) {
+          const [, authors, etAl, year, pageRef] = segmentMatch;
+          const formattedAuthors = authors
+            .split(';')
+            .map((a: string) => formatAuthorABNT2023(a.trim()))
+            .join('; ');
+          const etAlPart = etAl ? ' *et al.*' : '';
+          const pagePart = pageRef || '';
+          return `${formattedAuthors}${etAlPart}, ${year}${pagePart}`;
+        }
+        return segment; // Return unchanged if no match
+      });
+
+      return `(${formattedCitations.join('; ')})`;
+    });
 
     // Pattern 2: Apud citations - supports multi-word authors, et al., year suffix
     // Handles: (SILVA apud SANTOS, 2023), (SMITH-JONES apud O'BRIEN, 2023a)
     const apudPattern = new RegExp(
       `\\(([${authorChars}]+?)(\\s*${etAlPattern})?\\s+apud\\s+([${authorChars}]+?)(\\s*${etAlPattern})?,\\s*(\\d{4}[a-z]?)\\)`,
-      'gi'
+      'giu'
     );
 
     result = result.replace(

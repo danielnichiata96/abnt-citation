@@ -268,6 +268,14 @@ export function parseNameToCsl(name: string, options: ParseOptions = {}): CslNam
     return { family: nameParts[0] };
   }
 
+  // Special case: particle-only names (e.g., "da Silva", "dos Santos")
+  // When name starts with a particle and has no clear given name, treat entire name as family
+  if (nameParts.length >= 2 && PREFIX_PARTICLES.has(nameParts[0].toLowerCase())) {
+    // Check if this is a particle-only name by verifying there's no given name before the particle
+    // If the first word IS the particle, then everything is the family name
+    return { family: trimmed };
+  }
+
   const familyParts: string[] = [];
   let i = nameParts.length - 1;
 
