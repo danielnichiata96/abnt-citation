@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Made by CiteMe](https://img.shields.io/badge/Made%20by-CiteMe-0d9488)](https://citeme.app)
 
-> The first Brazilian academic citation parser that correctly follows ABNT NBR 10520:2023.
+> The first Brazilian academic citation parser compliant with ABNT NBR 10520:2023 and NBR 6023:2025.
 
 **This package was extracted from [CiteMe](https://citeme.app)** - Brazil's most complete academic citation manager.
 
@@ -27,14 +27,17 @@
 
 ## Why does this package exist?
 
-The 2023 update to ABNT (Brazilian Association of Technical Standards) changed how author names appear in parenthetical citations:
+ABNT (Brazilian Association of Technical Standards) updated citation and reference standards:
 
-| Author Type | Before (2002) | After (2023) |
-|------------|---------------|--------------|
+- **NBR 10520:2023** - Changed how author names appear in citations
+- **NBR 6023:2025** - Updated reference rules (ISSN optional, "ca." in italics, etc.)
+
+| Author Type | Before (2002) | After (2023/2025) |
+|------------|---------------|-------------------|
 | Person | (SILVA, 2023) | (Silva, 2023) |
 | Institution | (IBGE, 2023) | (IBGE, 2023) |
 
-**No existing parser** (Zotero, Mendeley, citation-js) implements this rule correctly because:
+**No existing parser** (Zotero, Mendeley, citation-js) implements these rules correctly because:
 
 1. CSL (Citation Style Language) doesn't support conditional post-processing
 2. It requires a list of protected acronyms (IBGE, USP, UNESCO, etc.)
@@ -67,7 +70,7 @@ postProcessABNT2023('(SILVA apud SANTOS, 2023)', true); // -> "(Silva apud Santo
 
 ## Complete API
 
-### ABNT 2023 Formatting
+### ABNT Formatting (NBR 10520:2023 + NBR 6023:2025)
 
 #### `formatAuthorABNT2023(author: string): string`
 
@@ -115,6 +118,17 @@ Returns "et al." formatted in italic (markdown):
 
 ```typescript
 formatEtAl(); // -> "*et al.*"
+```
+
+#### `formatCirca(): string`
+
+Returns "ca." (circa) formatted in italic per NBR 6023:2025:
+
+```typescript
+formatCirca(); // -> "*ca.*"
+
+// Used when exact year is unknown:
+// [*ca.* 2020] or (*ca.* 2020)
 ```
 
 ### Acronym Detection

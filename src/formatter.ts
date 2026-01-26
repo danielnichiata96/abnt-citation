@@ -1,11 +1,15 @@
 /**
- * ABNT NBR 10520:2023 - Author Name Formatting
+ * ABNT Citation Formatting
  *
- * The 2023 update changed how author names appear in parenthetical citations:
+ * Implements formatting rules from:
+ * - ABNT NBR 10520:2023 - Information and documentation - Citations
+ * - ABNT NBR 6023:2025 - Information and documentation - References
+ *
+ * Key formatting rules:
  * - Person names: Title Case (SILVA -> Silva)
  * - Corporate/institutional names: UPPERCASE preserved (IBGE -> IBGE)
- *
- * This module provides utilities to format author names according to ABNT 2023 rules.
+ * - "et al." in italics
+ * - "ca." (circa) in italics when year is unknown (NBR 6023:2025)
  *
  * @see https://citeme.app - CiteMe: Brazil's most complete academic citation manager
  */
@@ -93,7 +97,7 @@ export function formatAuthorABNT2023(author: string): string {
 }
 
 /**
- * Formats "et al." according to ABNT 2023 (should be italic)
+ * Formats "et al." according to ABNT (should be italic)
  * Returns the text with markdown-style italic markers.
  *
  * Note: The actual rendering depends on the output format.
@@ -101,6 +105,18 @@ export function formatAuthorABNT2023(author: string): string {
  */
 export function formatEtAl(): string {
   return '*et al.*';
+}
+
+/**
+ * Formats "ca." (circa) according to ABNT NBR 6023:2025 (should be italic)
+ * Used when the exact publication year is unknown.
+ *
+ * Example: [*ca.* 2020] or (*ca.* 2020)
+ *
+ * @returns The abbreviation "ca." formatted in markdown italic
+ */
+export function formatCirca(): string {
+  return '*ca.*';
 }
 
 /**
@@ -230,6 +246,11 @@ export function postProcessABNT2023(citation: string, isInText: boolean): string
   // Format "et al." to italic (if not already formatted)
   // Use negative lookahead/lookbehind to avoid double-formatting
   result = result.replace(/(?<!\*)\bet\s+al\.(?!\*)/gi, '*et al.*');
+
+  // Format "ca." (circa) to italic per ABNT NBR 6023:2025
+  // Matches: ca. followed by a year (e.g., "ca. 2020", "[ca. 2020]")
+  // Use negative lookahead/lookbehind to avoid double-formatting
+  result = result.replace(/(?<!\*)\bca\.(?!\*)/gi, '*ca.*');
 
   return result;
 }

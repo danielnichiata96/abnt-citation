@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   formatAuthorABNT2023,
   formatEtAl,
+  formatCirca,
   postProcessABNT2023,
 } from '../src/formatter';
 
@@ -110,6 +111,12 @@ describe('ABNT 2023 Formatter', () => {
   describe('formatEtAl', () => {
     it('returns italic-formatted et al.', () => {
       expect(formatEtAl()).toBe('*et al.*');
+    });
+  });
+
+  describe('formatCirca (NBR 6023:2025)', () => {
+    it('returns italic-formatted ca.', () => {
+      expect(formatCirca()).toBe('*ca.*');
     });
   });
 
@@ -428,6 +435,39 @@ describe('ABNT 2023 Formatter', () => {
         const input = '(SILVA et al., 2023)';
         const first = postProcessABNT2023(input, true);
         const second = postProcessABNT2023(first, true);
+        expect(second).toBe(first);
+      });
+    });
+
+    describe('circa (ca.) formatting - NBR 6023:2025', () => {
+      it('formats ca. to italic in references', () => {
+        const input = 'SILVA, J. Título. [ca. 2020].';
+        const result = postProcessABNT2023(input, false);
+        expect(result).toBe('SILVA, J. Título. [*ca.* 2020].');
+      });
+
+      it('formats ca. to italic in citations', () => {
+        const input = '(SILVA, ca. 2020)';
+        const result = postProcessABNT2023(input, true);
+        expect(result).toContain('*ca.*');
+      });
+
+      it('avoids double-formatting already italicized ca.', () => {
+        const input = 'SILVA, J. Título. [*ca.* 2020].';
+        const result = postProcessABNT2023(input, false);
+        expect(result).not.toContain('**ca.**');
+        expect(result).not.toContain('***');
+      });
+
+      it('handles ca. with different year formats', () => {
+        expect(postProcessABNT2023('[ca. 1990]', false)).toBe('[*ca.* 1990]');
+        expect(postProcessABNT2023('ca. 2000', false)).toBe('*ca.* 2000');
+      });
+
+      it('is idempotent for ca. formatting', () => {
+        const input = '[ca. 2020]';
+        const first = postProcessABNT2023(input, false);
+        const second = postProcessABNT2023(first, false);
         expect(second).toBe(first);
       });
     });

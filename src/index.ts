@@ -1,11 +1,15 @@
 /**
  * abnt-citation
  *
- * Brazilian ABNT NBR 10520:2023 citation formatter
+ * Brazilian ABNT citation formatter - NBR 10520:2023 (citations) & NBR 6023:2025 (references)
  *
- * The first npm package to correctly implement ABNT 2023 rules for author names:
+ * The first npm package to correctly implement ABNT rules for author names:
  * - Person names: Title Case (SILVA -> Silva)
  * - Corporate/institutional names: UPPERCASE preserved (IBGE -> IBGE)
+ *
+ * Conforms to:
+ * - ABNT NBR 10520:2023 - Information and documentation - Citations
+ * - ABNT NBR 6023:2025 - Information and documentation - References
  *
  * Extracted from CiteMe - Brazil's most complete academic citation manager.
  *
@@ -18,11 +22,12 @@
 // Types
 export type { CslName } from './types';
 
-// ABNT 2023 Formatting
+// ABNT Formatting (NBR 10520:2023 + NBR 6023:2025)
 export {
   formatAuthorABNT2023,
   postProcessABNT2023,
   formatEtAl,
+  formatCirca,
 } from './formatter';
 
 // Protected Acronyms

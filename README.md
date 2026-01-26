@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Made by CiteMe](https://img.shields.io/badge/Made%20by-CiteMe-0d9488)](https://citeme.app)
 
-> O primeiro parser brasileiro de citacoes academicas que segue corretamente a ABNT NBR 10520:2023.
+> O primeiro parser brasileiro de citacoes academicas conforme ABNT NBR 10520:2023 e NBR 6023:2025.
 
 **Este pacote foi extraido do [CiteMe](https://citeme.app)** - o gerenciador de citacoes academicas mais completo do Brasil.
 
@@ -27,14 +27,17 @@
 
 ## Por que este pacote existe?
 
-A atualizacao de 2023 da ABNT mudou como nomes de autores aparecem em citacoes parenteticas:
+A ABNT atualizou as normas de citacoes e referencias:
 
-| Tipo de autor | Antes (2002) | Depois (2023) |
-|--------------|--------------|---------------|
+- **NBR 10520:2023** - Mudou como nomes de autores aparecem em citacoes
+- **NBR 6023:2025** - Atualizou regras para referencias (ISSN opcional, "ca." em italico, etc.)
+
+| Tipo de autor | Antes (2002) | Depois (2023/2025) |
+|--------------|--------------|---------------------|
 | Pessoa | (SILVA, 2023) | (Silva, 2023) |
 | Instituicao | (IBGE, 2023) | (IBGE, 2023) |
 
-**Nenhum parser existente** (Zotero, Mendeley, citation-js) implementa essa regra corretamente porque:
+**Nenhum parser existente** (Zotero, Mendeley, citation-js) implementa essas regras corretamente porque:
 
 1. CSL (Citation Style Language) nao suporta pos-processamento condicional
 2. Requer uma lista de acronimos protegidos (IBGE, USP, UNESCO, etc.)
@@ -67,7 +70,7 @@ postProcessABNT2023('(SILVA apud SANTOS, 2023)', true); // -> "(Silva apud Santo
 
 ## API Completa
 
-### Formatacao ABNT 2023
+### Formatacao ABNT (NBR 10520:2023 + NBR 6023:2025)
 
 #### `formatAuthorABNT2023(author: string): string`
 
@@ -115,6 +118,17 @@ Retorna "et al." formatado em italico (markdown):
 
 ```typescript
 formatEtAl(); // -> "*et al.*"
+```
+
+#### `formatCirca(): string`
+
+Retorna "ca." (circa) formatado em italico conforme NBR 6023:2025:
+
+```typescript
+formatCirca(); // -> "*ca.*"
+
+// Usado quando o ano exato e desconhecido:
+// [*ca.* 2020] ou (*ca.* 2020)
 ```
 
 ### Deteccao de Acronimos

@@ -1,5 +1,5 @@
 /**
- * ABNT NBR 6023:2018 Compliance Test
+ * ABNT NBR 6023:2025 Compliance Test
  *
  * Tests each specific rule from the ABNT standard to verify compliance.
  * This file documents EXPECTED behavior according to ABNT rules,
@@ -348,7 +348,7 @@ describe('=== RESUMO DE CONFORMIDADE ABNT ===', () => {
   it('prints compliance summary', () => {
     const summary = `
 ╔════════════════════════════════════════════════════════════════════╗
-║                    CONFORMIDADE ABNT NBR 6023:2018                 ║
+║                    CONFORMIDADE ABNT NBR 6023:2025                 ║
 ╠════════════════════════════════════════════════════════════════════╣
 ║ ✅ 1. Múltiplos Agnomes (Filho Neto)         - IMPLEMENTADO        ║
 ║ ❌ 2. Nomes Espanhóis (García Márquez)       - NÃO IMPLEMENTADO    ║
