@@ -110,13 +110,13 @@ describe('ABNT 2023 Formatter', () => {
 
   describe('formatEtAl', () => {
     it('returns italic-formatted et al.', () => {
-      expect(formatEtAl()).toBe('*et al.*');
+      expect(formatEtAl()).toBe('<i>et al.</i>');
     });
   });
 
   describe('formatCirca (NBR 6023:2025)', () => {
     it('returns italic-formatted ca.', () => {
-      expect(formatCirca()).toBe('*ca.*');
+      expect(formatCirca()).toBe('<i>ca.</i>');
     });
   });
 
@@ -149,7 +149,7 @@ describe('ABNT 2023 Formatter', () => {
       it('formats et al. to italic', () => {
         const input = '(SILVA et al., 2023)';
         const result = postProcessABNT2023(input, true);
-        expect(result).toContain('*et al.*');
+        expect(result).toContain('<i>et al.</i>');
         expect(result).toContain('Silva');
       });
 
@@ -157,7 +157,7 @@ describe('ABNT 2023 Formatter', () => {
         const input = '(LECUN; BENGIO; HINTON et al., 2015)';
         const result = postProcessABNT2023(input, true);
         expect(result).toContain('Lecun');
-        expect(result).toContain('*et al.*');
+        expect(result).toContain('<i>et al.</i>');
       });
     });
 
@@ -209,7 +209,7 @@ describe('ABNT 2023 Formatter', () => {
       it('handles Apud with et al.', () => {
         const citation = '(SANTOS et al. apud SILVA, 2023)';
         const processed = postProcessABNT2023(citation, true);
-        expect(processed).toBe('(Santos *et al.* apud Silva, 2023)');
+        expect(processed).toBe('(Santos <i>et al.</i> apud Silva, 2023)');
       });
 
       it('handles multi-word names in Apud', () => {
@@ -246,7 +246,7 @@ describe('ABNT 2023 Formatter', () => {
 
       it('handles multi-cite with et al.', () => {
         const input = '(SILVA et al., 2020; SANTOS, 2021)';
-        const expected = '(Silva *et al.*, 2020; Santos, 2021)';
+        const expected = '(Silva <i>et al.</i>, 2020; Santos, 2021)';
         expect(postProcessABNT2023(input, true)).toBe(expected);
       });
 
@@ -273,7 +273,7 @@ describe('ABNT 2023 Formatter', () => {
       it('formats et al. to italic in bibliography', () => {
         const input = 'SILVA, J. et al. Title of work. 2023.';
         const result = postProcessABNT2023(input, false);
-        expect(result).toContain('*et al.*');
+        expect(result).toContain('<i>et al.</i>');
       });
 
       it('does not modify author names in bibliography (CSL handles this)', () => {
@@ -285,16 +285,16 @@ describe('ABNT 2023 Formatter', () => {
 
     describe('et al. double-formatting prevention', () => {
       it('avoids double-formatting already italicized et al.', () => {
-        const input = '(SILVA *et al.*, 2023)';
+        const input = '(SILVA <i>et al.</i>, 2023)';
         const result = postProcessABNT2023(input, true);
-        expect(result).not.toContain('**et al.**');
-        expect(result).not.toContain('***');
+        expect(result).not.toContain('<i><i>et al.</i></i>');
+        expect(result).not.toContain('<<<');
       });
 
       it('handles multiple et al. in same text', () => {
         const input = 'SILVA et al. and SANTOS et al.';
         const result = postProcessABNT2023(input, false);
-        const matches = result.match(/\*et al\.\*/g);
+        const matches = result.match(/<i>et al\.<\/i>/g);
         expect(matches).toHaveLength(2);
       });
     });
@@ -408,26 +408,26 @@ describe('ABNT 2023 Formatter', () => {
       it('handles year suffix with et al.', () => {
         const input = '(SILVA et al., 2023a)';
         const result = postProcessABNT2023(input, true);
-        expect(result).toBe('(Silva *et al.*, 2023a)');
+        expect(result).toBe('(Silva <i>et al.</i>, 2023a)');
       });
     });
 
     describe('pre-formatted et al. (idempotent)', () => {
       it('handles already markdown-formatted et al.', () => {
-        const input = '(SILVA *et al.*, 2023)';
-        const expected = '(Silva *et al.*, 2023)';
+        const input = '(SILVA <i>et al.</i>, 2023)';
+        const expected = '(Silva <i>et al.</i>, 2023)';
         expect(postProcessABNT2023(input, true)).toBe(expected);
       });
 
       it('handles HTML italic et al. with <i>', () => {
         const input = '(SILVA <i>et al.</i>, 2023)';
-        const expected = '(Silva *et al.*, 2023)';
+        const expected = '(Silva <i>et al.</i>, 2023)';
         expect(postProcessABNT2023(input, true)).toBe(expected);
       });
 
       it('handles HTML italic et al. with <em>', () => {
         const input = '(SILVA <em>et al.</em>, 2023)';
-        const expected = '(Silva *et al.*, 2023)';
+        const expected = '(Silva <i>et al.</i>, 2023)';
         expect(postProcessABNT2023(input, true)).toBe(expected);
       });
 
@@ -443,25 +443,25 @@ describe('ABNT 2023 Formatter', () => {
       it('formats ca. to italic in references', () => {
         const input = 'SILVA, J. Título. [ca. 2020].';
         const result = postProcessABNT2023(input, false);
-        expect(result).toBe('SILVA, J. Título. [*ca.* 2020].');
+        expect(result).toBe('SILVA, J. Título. [<i>ca.</i> 2020].');
       });
 
       it('formats ca. to italic in citations', () => {
         const input = '(SILVA, ca. 2020)';
         const result = postProcessABNT2023(input, true);
-        expect(result).toContain('*ca.*');
+        expect(result).toContain('<i>ca.</i>');
       });
 
       it('avoids double-formatting already italicized ca.', () => {
-        const input = 'SILVA, J. Título. [*ca.* 2020].';
+        const input = 'SILVA, J. Título. [<i>ca.</i> 2020].';
         const result = postProcessABNT2023(input, false);
-        expect(result).not.toContain('**ca.**');
+        expect(result).not.toContain('*<i>ca.</i>*');
         expect(result).not.toContain('***');
       });
 
       it('handles ca. with different year formats', () => {
-        expect(postProcessABNT2023('[ca. 1990]', false)).toBe('[*ca.* 1990]');
-        expect(postProcessABNT2023('ca. 2000', false)).toBe('*ca.* 2000');
+        expect(postProcessABNT2023('[ca. 1990]', false)).toBe('[<i>ca.</i> 1990]');
+        expect(postProcessABNT2023('ca. 2000', false)).toBe('<i>ca.</i> 2000');
       });
 
       it('is idempotent for ca. formatting', () => {

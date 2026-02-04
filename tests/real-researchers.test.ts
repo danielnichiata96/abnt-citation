@@ -445,7 +445,7 @@ describe('Real Researcher Citations - postProcessABNT2023', () => {
     it('formats single author with et al.', () => {
       const result = postProcessABNT2023('(NICOLELIS et al., 2014)', true);
       expect(result).toContain('Nicolelis');
-      expect(result).toContain('*et al.*');
+      expect(result).toContain('<i>et al.</i>');
     });
   });
 

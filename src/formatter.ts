@@ -98,25 +98,25 @@ export function formatAuthorABNT2023(author: string): string {
 
 /**
  * Formats "et al." according to ABNT (should be italic)
- * Returns the text with markdown-style italic markers.
+ * Returns HTML italic tags for proper rendering in web/document contexts.
  *
- * Note: The actual rendering depends on the output format.
- * For HTML output, this would need to be converted to <em> tags.
+ * Uses <i> tag (presentational italic) rather than <em> (semantic emphasis)
+ * because "et al." is a typographic convention, not emphasis.
  */
 export function formatEtAl(): string {
-  return '*et al.*';
+  return '<i>et al.</i>';
 }
 
 /**
  * Formats "ca." (circa) according to ABNT NBR 6023:2025 (should be italic)
  * Used when the exact publication year is unknown.
  *
- * Example: [*ca.* 2020] or (*ca.* 2020)
+ * Example: [<i>ca.</i> 2020] or (<i>ca.</i> 2020)
  *
- * @returns The abbreviation "ca." formatted in markdown italic
+ * @returns The abbreviation "ca." formatted in HTML italic
  */
 export function formatCirca(): string {
-  return '*ca.*';
+  return '<i>ca.</i>';
 }
 
 /**
@@ -203,7 +203,7 @@ export function postProcessABNT2023(citation: string, isInText: boolean): string
             .split(';')
             .map((a: string) => formatAuthorABNT2023(a.trim()))
             .join('; ');
-          const etAlPart = etAl ? ' *et al.*' : '';
+          const etAlPart = etAl ? ' <i>et al.</i>' : '';
           const pagePart = pageRef || '';
           return `${formattedAuthors}${etAlPart}, ${year}${pagePart}`;
         }
@@ -235,22 +235,28 @@ export function postProcessABNT2023(citation: string, isInText: boolean): string
           .map((a: string) => formatAuthorABNT2023(a.trim()))
           .join('; ');
 
-        const etAlPart1 = etAl1 ? ' *et al.*' : '';
-        const etAlPart2 = etAl2 ? ' *et al.*' : '';
+        const etAlPart1 = etAl1 ? ' <i>et al.</i>' : '';
+        const etAlPart2 = etAl2 ? ' <i>et al.</i>' : '';
 
         return `(${formatted1}${etAlPart1} apud ${formatted2}${etAlPart2}, ${year})`;
       }
     );
   }
 
-  // Format "et al." to italic (if not already formatted)
-  // Use negative lookahead/lookbehind to avoid double-formatting
-  result = result.replace(/(?<!\*)\bet\s+al\.(?!\*)/gi, '*et al.*');
+  // Format "et al." to italic (if not already formatted with HTML or markdown)
+  // Negative lookbehind: not preceded by * or <i> or <em>
+  // Negative lookahead: not followed by * or </i> or </em>
+  result = result.replace(
+    /(?<![*<]|<i>|<em>)\bet\s+al\.(?![*<]|<\/i>|<\/em>)/gi,
+    '<i>et al.</i>'
+  );
 
   // Format "ca." (circa) to italic per ABNT NBR 6023:2025
   // Matches: ca. followed by a year (e.g., "ca. 2020", "[ca. 2020]")
-  // Use negative lookahead/lookbehind to avoid double-formatting
-  result = result.replace(/(?<!\*)\bca\.(?!\*)/gi, '*ca.*');
+  result = result.replace(
+    /(?<![*<]|<i>|<em>)\bca\.(?![*<]|<\/i>|<\/em>)/gi,
+    '<i>ca.</i>'
+  );
 
   return result;
 }

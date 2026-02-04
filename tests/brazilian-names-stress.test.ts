@@ -460,14 +460,14 @@ describe('postProcessABNT2023 - Citation Stress Test', () => {
     it('should format et al. in italic', () => {
       const input = '(SILVA et al., 2023)';
       const result = postProcessABNT2023(input, true);
-      expect(result).toContain('*et al.*');
+      expect(result).toContain('<i>et al.</i>');
       expect(result).toContain('Silva');
     });
 
     it('should handle multiple authors with et al.', () => {
       const input = '(SILVA; SANTOS et al., 2023)';
       const result = postProcessABNT2023(input, true);
-      expect(result).toContain('*et al.*');
+      expect(result).toContain('<i>et al.</i>');
       expect(result).toContain('Silva');
       expect(result).toContain('Santos');
     });
