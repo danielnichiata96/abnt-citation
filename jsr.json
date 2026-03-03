@@ -1,0 +1,8 @@
+{
+  "name": "@citeme/abnt-citation",
+  "version": "1.2.1",
+  "exports": "./src/index.ts",
+  "publish": {
+    "include": ["src/**/*.ts", "README.md", "README.en.md", "LICENSE", "CHANGELOG.md"]
+  }
+}

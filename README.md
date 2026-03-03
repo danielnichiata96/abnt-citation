@@ -6,7 +6,7 @@
 
 > O primeiro parser brasileiro de citacoes academicas conforme ABNT NBR 10520:2023 e NBR 6023:2025.
 
-**Este pacote foi extraido do [CiteMe](https://citeme.app)** - o gerenciador de citacoes academicas mais completo do Brasil.
+**Este pacote foi extraido do [CiteMe](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation)** - o gerenciador de citacoes academicas mais completo do Brasil.
 
 [English version](./README.en.md)
 
@@ -14,14 +14,15 @@
 
 ## Quer formatacao automatica sem codigo?
 
-**[CiteMe](https://citeme.app)** formata suas referencias automaticamente em 14+ estilos (ABNT, APA, Vancouver, etc.) - sem precisar instalar nada:
+**[CiteMe](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation)** formata suas referencias automaticamente em **40+ estilos** (ABNT, APA, Vancouver, Chicago, IEEE, MLA e mais) - sem precisar instalar nada:
 
-- Busca automatica por DOI, ISBN ou titulo
-- Importacao de curriculo Lattes
-- Exportacao para Word, BibTeX, RIS
-- 100% gratuito para estudantes
+- Busca em **8+ bases academicas** (OpenAlex, PubMed, SciELO, Semantic Scholar e mais - 200M+ artigos)
+- Fontes verificadas de bases reais - **zero risco de alucinacao de IA**
+- Extensao para **Chrome/Firefox**, add-in para **Word** e **Google Docs**
+- Importacao/exportacao em BibTeX e RIS
+- Plano gratuito disponivel - sem cartao de credito
 
-[Experimente o CiteMe gratuitamente](https://citeme.app)
+[Experimente o CiteMe](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation)
 
 ---
 
@@ -254,12 +255,24 @@ const formatted = postProcessABNT2023(citation, true);
 
 ## Usado em Producao
 
-Este pacote e o motor de formatacao ABNT 2023 do **[CiteMe](https://citeme.app)**, usado por milhares de estudantes brasileiros.
+Este pacote e o motor de formatacao ABNT 2023 do **[CiteMe](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation)**, usado por milhares de estudantes brasileiros para gerar referencias academicas corretas.
+
+## Ecossistema CiteMe
+
+O CiteMe oferece ferramentas para todo o fluxo de trabalho academico:
+
+| Produto | Descricao |
+|---------|-----------|
+| [Web App](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation) | Gerador de referencias com busca em 8+ bases academicas |
+| Extensao Chrome/Firefox | Cite qualquer pagina ou artigo com um clique |
+| Add-in Word | Insira citacoes direto no Microsoft Word |
+| Add-on Google Docs | Integre referencias no Google Docs |
+| `abnt-citation` (este pacote) | Motor open-source de formatacao ABNT 2023 |
 
 ## Contribuindo
 
-Contribuicoes sao bem-vindas! Por favor, abra uma issue ou pull request no [GitHub](https://github.com/citeme-app/abnt-citation).
+Contribuicoes sao bem-vindas! Por favor, abra uma issue ou pull request no [GitHub](https://github.com/danielnichiata96/abnt-citation).
 
 ## Licenca
 
-MIT - Desenvolvido com carinho pelo time [CiteMe](https://citeme.app)
+MIT - Desenvolvido pelo time [CiteMe](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation)
