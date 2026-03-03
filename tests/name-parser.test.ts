@@ -404,13 +404,13 @@ describe('Brazilian Name Parser', () => {
     describe('edge cases', () => {
       it('handles empty string', () => {
         expect(parseNameToCsl('')).toEqual({
-          family: 'Unknown',
+          family: '',
         });
       });
 
       it('handles whitespace only', () => {
         expect(parseNameToCsl('   ')).toEqual({
-          family: 'Unknown',
+          family: '',
         });
       });
 
@@ -430,8 +430,8 @@ describe('Brazilian Name Parser', () => {
       expect(extractFamilyName('SILVA, Joao')).toBe('SILVA');
     });
 
-    it('returns Unknown for empty string', () => {
-      expect(extractFamilyName('')).toBe('Unknown');
+    it('returns empty string for empty input', () => {
+      expect(extractFamilyName('')).toBe('');
     });
   });
 

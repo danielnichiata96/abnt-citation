@@ -364,8 +364,8 @@ describe('Whitespace and Punctuation Edge Cases', () => {
     { name: 'João  Carlos   da   Silva', expected: { family: 'da Silva', given: 'João Carlos' } },
     { name: 'Silva, João.', expected: { family: 'Silva', given: 'João.' } },
     { name: 'SILVA,JOÃO', expected: { family: 'SILVA', given: 'JOÃO' } }, // No space after comma
-    { name: '  ', expected: { family: 'Unknown', given: undefined } }, // Only whitespace
-    { name: '', expected: { family: 'Unknown', given: undefined } }, // Empty string
+    { name: '  ', expected: { family: '', given: undefined } }, // Only whitespace
+    { name: '', expected: { family: '', given: undefined } }, // Empty string
   ];
 
   describe('Current Behavior', () => {

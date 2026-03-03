@@ -261,6 +261,21 @@ const DEFAULT_ACRONYMS = [
   "OMPI",
   "AIEA",
 
+  // Common international 4-char acronyms (must be explicit since heuristic only covers 2-3 chars)
+  "NASA",
+  "FIFA",
+  "FIBA",
+  "FINA",
+  "IATA",
+  "ICAO",
+  "OPEP",
+  "OPEC",
+  "FEMA",
+  "DARPA",
+  "CERN",
+  "ITER",
+  "ALMA",
+
   // Organizacoes de Normas e Padroes
   "ABNT",
   "ISO",
@@ -607,22 +622,22 @@ export function resetProtectedAcronyms(): void {
 /**
  * Checks if a string looks like an acronym based on pattern:
  * - All uppercase letters
- * - 2-4 characters (5+ char strings are likely surnames)
+ * - 2-3 characters (4+ char strings are too ambiguous — could be surnames like MORA, LAGE)
  * - No lowercase letters
  * - May contain numbers (e.g., G20, G7)
  * - Not a known short surname (LEE, WU, LI, etc.)
  *
- * Note: This is intentionally conservative to avoid false positives
- * with surnames like "SILVA" (5 chars), "SMITH" (5 chars).
- * Most institutional acronyms are 2-4 characters. Longer ones like
- * "CAPES" (5 chars) should be in the PROTECTED_ACRONYMS list.
+ * Note: 4+ char acronyms (IBGE, NASA, FIFA) must be in the PROTECTED_ACRONYMS
+ * list explicitly. The heuristic only catches 2-3 char unknown acronyms to
+ * avoid false positives with 4-letter surnames (MORA, LAGE, VALE, etc.).
  */
 function looksLikeAcronym(text: string): boolean {
   const trimmed = text.trim();
 
-  // Acronyms are typically 2-4 characters
-  // 5+ char all-caps strings are likely surnames (SILVA, SMITH, SOUZA)
-  if (trimmed.length < 2 || trimmed.length > 4) return false;
+  // Heuristic only for 2-3 characters
+  // 4+ char all-caps strings are too ambiguous (MORA vs IBGE)
+  // 4+ char acronyms should be in the PROTECTED_ACRONYMS list
+  if (trimmed.length < 2 || trimmed.length > 3) return false;
 
   // Must have at least one letter
   if (!/[A-Z]/.test(trimmed)) return false;

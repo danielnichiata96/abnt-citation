@@ -196,10 +196,15 @@ describe('ABNT 2023 Protected Acronyms', () => {
     });
 
     describe('heuristic detection (unknown acronyms)', () => {
-      it('detects all-caps short strings as acronyms', () => {
-        expect(isProtectedAcronym('NASA')).toBe(true);
+      it('detects 2-3 char all-caps strings as acronyms via heuristic', () => {
         expect(isProtectedAcronym('CIA')).toBe(true);
         expect(isProtectedAcronym('FBI')).toBe(true);
+      });
+
+      it('detects 4-char acronyms via explicit list (not heuristic)', () => {
+        expect(isProtectedAcronym('NASA')).toBe(true);
+        expect(isProtectedAcronym('FIFA')).toBe(true);
+        expect(isProtectedAcronym('IBGE')).toBe(true);
       });
 
       it('detects acronyms with numbers', () => {

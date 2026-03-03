@@ -92,6 +92,15 @@ export function formatAuthorABNT2023(author: string): string {
     return trimmed.toUpperCase();
   }
 
+  // If input is mixed case (not all-upper, not all-lower), it's already
+  // properly capitalized — preserve it. This avoids destroying names like
+  // McDonald, LeCun, McBride, DeSouza, etc.
+  const isAllUpper = trimmed === trimmed.toUpperCase();
+  const isAllLower = trimmed === trimmed.toLowerCase();
+  if (!isAllUpper && !isAllLower) {
+    return trimmed;
+  }
+
   // Person names: convert to Title Case with Portuguese particle handling
   return toTitleCasePortuguese(trimmed);
 }

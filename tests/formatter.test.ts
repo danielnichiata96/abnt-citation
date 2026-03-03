@@ -67,6 +67,19 @@ describe('ABNT 2023 Formatter', () => {
         expect(formatAuthorABNT2023('REIS')).toBe('Reis');
         expect(formatAuthorABNT2023('DIAS')).toBe('Dias');
       });
+
+      it('handles 4-letter surnames that were false positives', () => {
+        expect(formatAuthorABNT2023('MORA')).toBe('Mora');
+        expect(formatAuthorABNT2023('LAGE')).toBe('Lage');
+      });
+
+      it('preserves mixed-case names (McDonald, LeCun)', () => {
+        expect(formatAuthorABNT2023('McDonald')).toBe('McDonald');
+        expect(formatAuthorABNT2023('LeCun')).toBe('LeCun');
+        expect(formatAuthorABNT2023('McBride')).toBe('McBride');
+        expect(formatAuthorABNT2023('DeVito')).toBe('DeVito');
+        expect(formatAuthorABNT2023('DeSouza')).toBe('DeSouza');
+      });
     });
 
     describe('Portuguese particles (da, de, do)', () => {

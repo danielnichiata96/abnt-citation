@@ -229,7 +229,7 @@ export function parseNameToCsl(name: string, options: ParseOptions = {}): CslNam
   let trimmed = name.trim();
 
   if (!trimmed) {
-    return { family: 'Unknown' };
+    return { family: '' };
   }
 
   // Handle institutional authors - don't parse, return as-is
@@ -346,7 +346,7 @@ export function parseNameToCsl(name: string, options: ParseOptions = {}): CslNam
  * extractFamilyName("Maria da Costa") // -> "da Costa"
  */
 export function extractFamilyName(displayName: string): string {
-  return parseNameToCsl(displayName).family || 'Unknown';
+  return parseNameToCsl(displayName).family ?? '';
 }
 
 /**

@@ -115,10 +115,10 @@ postProcessABNT2023('SILVA, J. et al. Titulo. 2023.', false);
 
 #### `formatEtAl(): string`
 
-Retorna "et al." formatado em italico (markdown):
+Retorna "et al." formatado em italico (HTML):
 
 ```typescript
-formatEtAl(); // -> "*et al.*"
+formatEtAl(); // -> "<i>et al.</i>"
 ```
 
 #### `formatCirca(): string`
@@ -126,10 +126,10 @@ formatEtAl(); // -> "*et al.*"
 Retorna "ca." (circa) formatado em italico conforme NBR 6023:2025:
 
 ```typescript
-formatCirca(); // -> "*ca.*"
+formatCirca(); // -> "<i>ca.</i>"
 
 // Usado quando o ano exato e desconhecido:
-// [*ca.* 2020] ou (*ca.* 2020)
+// [<i>ca.</i> 2020] ou (<i>ca.</i> 2020)
 ```
 
 ### Deteccao de Acronimos
