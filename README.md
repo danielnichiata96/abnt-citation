@@ -65,7 +65,7 @@ formatAuthorABNT2023('DA SILVA'); // -> "Da Silva" (particula maiuscula no inici
 // Pos-processa citacoes completas
 postProcessABNT2023('(SILVA, 2023)', true);           // -> "(Silva, 2023)"
 postProcessABNT2023('(SILVA; IBGE, 2023)', true);     // -> "(Silva; IBGE, 2023)"
-postProcessABNT2023('(SILVA et al., 2023)', true);    // -> "(Silva *et al.*, 2023)"
+postProcessABNT2023('(SILVA et al., 2023)', true);    // -> "(Silva <i>et al.</i>, 2023)"
 postProcessABNT2023('(SILVA apud SANTOS, 2023)', true); // -> "(Silva apud Santos, 2023)"
 ```
 
@@ -110,7 +110,7 @@ postProcessABNT2023('(SILVA apud SANTOS, 2023)', true);
 
 // Bibliografia (isInText = false) - apenas formata et al.
 postProcessABNT2023('SILVA, J. et al. Titulo. 2023.', false);
-// -> "SILVA, J. *et al.* Titulo. 2023."
+// -> "SILVA, J. <i>et al.</i> Titulo. 2023."
 ```
 
 #### `formatEtAl(): string`

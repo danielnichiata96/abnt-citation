@@ -657,7 +657,7 @@ function looksLikeAcronym(text: string): boolean {
  *
  * Uses two strategies:
  * 1. Exact match against known acronyms list
- * 2. Heuristic detection for unknown acronyms (all caps, 2-4 chars, not a short surname)
+ * 2. Heuristic detection for unknown acronyms (all caps, 2-3 chars, not a short surname)
  *
  * @param author - Author name to check (e.g., "IBGE", "SILVA", "UNESCO")
  * @returns true if the name should remain uppercase

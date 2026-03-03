@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-03-03
+
+### Fixed
+
+- **Acronym false positives** - Reduced heuristic detection from 2-4 to 2-3 characters. 4-letter surnames like MORA, LAGE were incorrectly treated as acronyms. Added NASA, FIFA, and other common 4-char acronyms to the explicit list.
+- **Mixed-case name destruction** - `formatAuthorABNT2023('McDonald')` no longer returns `'Mcdonald'`. Names with existing mixed-case capitalization are now preserved as-is.
+- **README documentation** - Fixed `formatEtAl()`/`formatCirca()` docs to show HTML output (`<i>`) instead of markdown (`*`).
+
+### Changed
+
+- **BREAKING**: `parseNameToCsl('')` now returns `{ family: '' }` instead of `{ family: 'Unknown' }`. `extractFamilyName('')` returns `''` instead of `'Unknown'`. This prevents fabricating data from empty input.
+
+---
+
 ## [1.2.0] - 2026-01-26
 
 ### Added
