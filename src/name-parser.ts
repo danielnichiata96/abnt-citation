@@ -13,6 +13,7 @@
  */
 
 import type { CslName } from './types';
+import { isInstitutionalName } from './institutional';
 
 /**
  * Options for parsing names.
@@ -29,9 +30,12 @@ export interface ParseOptions {
    * - 'person': Normal person name (default) - will be inverted
    * - 'institution': Institutional author - will NOT be inverted, comma preserved
    * - 'historical': Historical/religious name - will NOT be inverted (Dom Pedro II, Papa Francisco)
+   * - 'auto': Detect institutions via {@link isInstitutionalName}; parse the rest as persons.
+   *   Use this when the name comes from an API that mixes corporate and person
+   *   authors in the same field (OpenAlex, Google Books, BDTD, Open Library).
    * @default 'person'
    */
-  type?: 'person' | 'institution' | 'historical';
+  type?: 'person' | 'institution' | 'historical' | 'auto';
 }
 
 /**
@@ -222,6 +226,12 @@ export const PORTUGUESE_PARTICLES = new Set([
  * // -> { family: "USP, Faculdade de Medicina" }
  *
  * @example
+ * parseNameToCsl("Ministério da Saúde", { type: 'auto' })
+ * // -> { family: "Ministério da Saúde" }  (detected as institutional)
+ * parseNameToCsl("João Silva Filho", { type: 'auto' })
+ * // -> { family: "Silva Filho", given: "João" }  (parsed as a person)
+ *
+ * @example
  * parseNameToCsl("Dom Pedro II", { type: 'historical' })
  * // -> { family: "Dom Pedro II" }
  */
@@ -239,6 +249,12 @@ export function parseNameToCsl(name: string, options: ParseOptions = {}): CslNam
 
   // Handle historical/religious names - don't invert
   if (options.type === 'historical') {
+    return { family: trimmed };
+  }
+
+  // Auto-detect institutional authors - keep the name whole so ABNT renders
+  // "MINISTÉRIO DA SAÚDE" instead of "DA SAÚDE, Ministério"
+  if (options.type === 'auto' && isInstitutionalName(trimmed)) {
     return { family: trimmed };
   }
 

@@ -30,6 +30,9 @@ export {
   formatCirca,
 } from './formatter';
 
+// Institutional / corporate author detection
+export { isInstitutionalName, INSTITUTIONAL_PATTERNS } from './institutional';
+
 // Protected Acronyms
 export {
   PROTECTED_ACRONYMS,

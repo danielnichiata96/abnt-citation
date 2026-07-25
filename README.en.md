@@ -14,11 +14,11 @@
 
 ## Want automatic formatting without code?
 
-**[CiteMe](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation)** formats your references automatically in **40+ styles** (ABNT, APA, Vancouver, Chicago, IEEE, MLA and more) - no installation needed:
+**[CiteMe](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation)** formats your references automatically in **60 curated styles** (ABNT, APA, Vancouver, Chicago, IEEE, MLA and more - 10,000+ via remote CSL) - no installation needed:
 
-- Search across **8+ academic databases** (OpenAlex, PubMed, SciELO, Semantic Scholar and more - 200M+ papers)
+- Search across **10+ academic databases** (OpenAlex, PubMed, Europe PMC, arXiv, Semantic Scholar, BDTD and more - 200M+ papers)
 - Sources verified from real databases - **zero risk of AI hallucinations**
-- **Chrome/Firefox** extension, **Word** add-in and **Google Docs** add-on
+- Extension for **Chrome, Firefox and Safari**
 - Import/export in BibTeX and RIS
 - Free plan available - no credit card required
 
@@ -44,7 +44,7 @@ ABNT (Brazilian Association of Technical Standards) updated citation and referen
 2. It requires a list of protected acronyms (IBGE, USP, UNESCO, etc.)
 3. It requires heuristics to detect unknown acronyms
 
-This package solves this problem with **zero dependencies** and **< 10KB**.
+This package solves this problem with **zero dependencies** and **~4KB** (minified + gzip).
 
 ## Installation
 
@@ -164,9 +164,44 @@ Adds multiple acronyms:
 addProtectedAcronyms(['ACME', 'CORP', 'INC']);
 ```
 
+### Institution Detection
+
+#### `isInstitutionalName(name: string): boolean`
+
+Detects corporate authors (agencies, universities, NGOs) mixed with person names
+in the same author field - the normal case in academic APIs:
+
+```typescript
+isInstitutionalName('Ministério da Saúde');        // true
+isInstitutionalName('World Health Organization');  // true
+isInstitutionalName('IBGE');                       // true
+isInstitutionalName('João Silva Filho');           // false
+```
+
+Covers Portuguese, Spanish and English keywords plus known acronyms.
+
+> **Known limitation**: a single ALL-CAPS token of 2-7 letters is classified as an
+> institution - the heuristic cannot tell `IBGE` from `SILVA`. Normalize the case
+> before calling (`Silva` is correctly classified as a person).
+
+#### `parseNameToCsl(name, { type: 'auto' })`
+
+Combines both: institutions stay whole, person names are inverted as usual.
+
+```typescript
+parseNameToCsl('Ministério da Saúde', { type: 'auto' });
+// -> { family: "Ministério da Saúde" }   (without 'auto': { family: "da Saúde", given: "Ministério" })
+
+parseNameToCsl('João Silva Filho', { type: 'auto' });
+// -> { family: "Silva Filho", given: "João" }
+```
+
+Use `type: 'auto'` whenever the name comes from an API that mixes corporate and
+person authors in the same array (OpenAlex, Google Books, BDTD, Open Library).
+
 ### Brazilian Name Parser
 
-#### `parseNameToCsl(name: string): CslName`
+#### `parseNameToCsl(name: string, options?: ParseOptions): CslName`
 
 Converts a name to CSL format with support for Brazilian naming conventions:
 
@@ -263,10 +298,9 @@ CiteMe offers tools for the entire academic workflow:
 
 | Product | Description |
 |---------|-------------|
-| [Web App](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation) | Reference generator with search across 8+ academic databases |
-| Chrome/Firefox Extension | Cite any page or article with one click |
-| Word Add-in | Insert citations directly in Microsoft Word |
-| Google Docs Add-on | Integrate references in Google Docs |
+| [Web App](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation) | Reference generator with search across 10+ academic databases |
+| Chrome/Firefox/Safari Extension | Cite any page or article with one click |
+| [Reference Checker](https://citeme.app/tools/reference-checker?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation) | Paste your reference list and see which ones actually exist |
 | `abnt-citation` (this package) | Open-source ABNT 2023 formatting engine |
 
 ## Contributing

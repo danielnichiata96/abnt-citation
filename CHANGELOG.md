@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-07-25
+
+### Added
+
+- **Institutional author detection** - `isInstitutionalName(name)` and `INSTITUTIONAL_PATTERNS` are now part of the public API. Covers organization keywords in Portuguese, Spanish and English plus known Brazilian and international acronyms.
+- **`parseNameToCsl(name, { type: 'auto' })`** - detects corporate authors and keeps them whole, while parsing person names as usual. Academic APIs (OpenAlex, Google Books, BDTD, Open Library) return corporate and person authors in the same field; without this, `"Ministério da Saúde"` was inverted into `{ family: "da Saúde", given: "Ministério" }` and rendered as `DA SAÚDE, Ministério` in ABNT.
+
+### Changed
+
+- Documentation: replaced the `< 10KB` size claim with the measured `~4KB` (minified + gzip), and corrected the CiteMe product descriptions (style count, database list, and shipped surfaces).
+
+### Notes
+
+- `type: 'auto'` is strictly opt-in. Default `parseNameToCsl(name)` behaviour is unchanged, so existing consumers are unaffected.
+- Known limitation carried over with `isInstitutionalName`: a single ALL-CAPS token of 2-7 letters is classified as institutional (`SILVA` → `true`). Normalize the case before calling. `isProtectedAcronym` remains the stricter check that excludes known short surnames.
+
+---
+
 ## [1.3.0] - 2026-03-03
 
 ### Fixed

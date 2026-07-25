@@ -14,11 +14,11 @@
 
 ## Quer formatacao automatica sem codigo?
 
-**[CiteMe](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation)** formata suas referencias automaticamente em **40+ estilos** (ABNT, APA, Vancouver, Chicago, IEEE, MLA e mais) - sem precisar instalar nada:
+**[CiteMe](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation)** formata suas referencias automaticamente em **60 estilos curados** (ABNT, APA, Vancouver, Chicago, IEEE, MLA e mais - 10.000+ via CSL remoto) - sem precisar instalar nada:
 
-- Busca em **8+ bases academicas** (OpenAlex, PubMed, SciELO, Semantic Scholar e mais - 200M+ artigos)
+- Busca em **10+ bases academicas** (OpenAlex, PubMed, Europe PMC, arXiv, Semantic Scholar, BDTD e mais - 200M+ artigos)
 - Fontes verificadas de bases reais - **zero risco de alucinacao de IA**
-- Extensao para **Chrome/Firefox**, add-in para **Word** e **Google Docs**
+- Extensao para **Chrome, Firefox e Safari**
 - Importacao/exportacao em BibTeX e RIS
 - Plano gratuito disponivel - sem cartao de credito
 
@@ -44,7 +44,7 @@ A ABNT atualizou as normas de citacoes e referencias:
 2. Requer uma lista de acronimos protegidos (IBGE, USP, UNESCO, etc.)
 3. Requer heuristicas para detectar acronimos desconhecidos
 
-Este pacote resolve esse problema com **zero dependencias** e **< 10KB**.
+Este pacote resolve esse problema com **zero dependencias** e **~4KB** (minificado + gzip).
 
 ## Instalacao
 
@@ -164,9 +164,44 @@ Adiciona multiplos acronimos:
 addProtectedAcronyms(['ACME', 'CORP', 'INC']);
 ```
 
+### Deteccao de Instituicoes
+
+#### `isInstitutionalName(name: string): boolean`
+
+Detecta autores corporativos (orgaos, universidades, ONGs) misturados com pessoas
+no mesmo campo de autor - o caso normal em APIs academicas:
+
+```typescript
+isInstitutionalName('Ministerio da Saude');        // true
+isInstitutionalName('World Health Organization');  // true
+isInstitutionalName('IBGE');                       // true
+isInstitutionalName('Joao Silva Filho');           // false
+```
+
+Cobre palavras-chave em portugues, espanhol e ingles + siglas conhecidas.
+
+> **Limitacao conhecida**: um token unico em CAIXA ALTA de 2-7 letras e classificado
+> como instituicao - a heuristica nao distingue `IBGE` de `SILVA`. Normalize a
+> caixa antes de chamar (`Silva` e corretamente classificado como pessoa).
+
+#### `parseNameToCsl(name, { type: 'auto' })`
+
+Combina os dois: instituicao fica inteira, pessoa e invertida normalmente.
+
+```typescript
+parseNameToCsl('Ministerio da Saude', { type: 'auto' });
+// -> { family: "Ministerio da Saude" }   (sem 'auto': { family: "da Saude", given: "Ministerio" })
+
+parseNameToCsl('Joao Silva Filho', { type: 'auto' });
+// -> { family: "Silva Filho", given: "Joao" }
+```
+
+Use `type: 'auto'` sempre que o nome vier de uma API que mistura autores
+corporativos e pessoais no mesmo array (OpenAlex, Google Books, BDTD, Open Library).
+
 ### Parser de Nomes Brasileiros
 
-#### `parseNameToCsl(name: string): CslName`
+#### `parseNameToCsl(name: string, options?: ParseOptions): CslName`
 
 Converte nome para formato CSL com suporte a convencoes brasileiras:
 
@@ -263,10 +298,9 @@ O CiteMe oferece ferramentas para todo o fluxo de trabalho academico:
 
 | Produto | Descricao |
 |---------|-----------|
-| [Web App](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation) | Gerador de referencias com busca em 8+ bases academicas |
-| Extensao Chrome/Firefox | Cite qualquer pagina ou artigo com um clique |
-| Add-in Word | Insira citacoes direto no Microsoft Word |
-| Add-on Google Docs | Integre referencias no Google Docs |
+| [Web App](https://citeme.app?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation) | Gerador de referencias com busca em 10+ bases academicas |
+| Extensao Chrome/Firefox/Safari | Cite qualquer pagina ou artigo com um clique |
+| [Verificador de referencias](https://citeme.app/tools/reference-checker?utm_source=npm&utm_medium=readme&utm_campaign=abnt-citation) | Cole sua lista e veja quais referencias existem de verdade |
 | `abnt-citation` (este pacote) | Motor open-source de formatacao ABNT 2023 |
 
 ## Contribuindo
