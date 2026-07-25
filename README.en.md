@@ -44,7 +44,7 @@ ABNT (Brazilian Association of Technical Standards) updated citation and referen
 2. It requires a list of protected acronyms (IBGE, USP, UNESCO, etc.)
 3. It requires heuristics to detect unknown acronyms
 
-This package solves this problem with **zero dependencies** and **~4KB** (minified + gzip).
+This package solves this problem with **zero dependencies** and **~5KB** (minified + gzip).
 
 ## Installation
 
@@ -260,7 +260,7 @@ isBrazilianSuffix('Silva');   // false
 
 ```typescript
 import {
-  PROTECTED_ACRONYMS,   // Set<string> - 150+ Brazilian acronyms
+  PROTECTED_ACRONYMS,   // Set<string> - 379 acronyms (Brazilian + international)
   SHORT_SURNAMES,       // Set<string> - Short surnames (LEE, WU, LIMA, etc.)
   BRAZILIAN_SUFFIXES,   // Set<string> - Suffixes (FILHO, NETO, JUNIOR, etc.)
   PORTUGUESE_PARTICLES, // Set<string> - Particles (da, de, do, das, dos, e)

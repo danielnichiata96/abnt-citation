@@ -11,10 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Institutional author detection** - `isInstitutionalName(name)` and `INSTITUTIONAL_PATTERNS` are now part of the public API. Covers organization keywords in Portuguese, Spanish and English plus known Brazilian and international acronyms.
 - **`parseNameToCsl(name, { type: 'auto' })`** - detects corporate authors and keeps them whole, while parsing person names as usual. Academic APIs (OpenAlex, Google Books, BDTD, Open Library) return corporate and person authors in the same field; without this, `"Ministério da Saúde"` was inverted into `{ family: "da Saúde", given: "Ministério" }` and rendered as `DA SAÚDE, Ministério` in ABNT.
+- **105 institutional acronyms** (275 → 379). The `looksLikeAcronym` heuristic only covers 2-3 character tokens, so every 4+ char acronym must be listed explicitly — until now `UFRPE` formatted as `Ufrpe`, `IFCE` as `Ifce`. Added: 20 federal universities (UFRPE, UFERSA, UFCG, UNILA, UNIVASF, UNIFESSPA…), 19 Institutos Federais (IFRS, IFMG, IFCE, IFBA…), 13 state universities (UNEMAT, UNIMONTES, UEPB, UEMG…), 15 private/community universities (UNISINOS, UNIVALI, FEEVALE, UNIFOR…), 10 state research foundations (FUNCAP, FAPEG, FAPEMAT…), 20 agencies and research institutes (ICMBIO, INPI, IPEN, ESALQ, COPPE, FIOCRUZ/ENSP, CONFEA, COFFITO…) and 8 international bodies (USDA, CNRS, CSIC, NOAA, USGS, PAHO, UNODC, JAXA).
+- Invariant tests: no entry may collide with `SHORT_SURNAMES`, every entry is uppercase and whitespace-free, and every new addition is 4+ chars.
+
+### Fixed
+
+- **`ABE` shadowed a person surname** - it was in both `PROTECTED_ACRONYMS` and `SHORT_SURNAMES`, and the acronym list is checked first, so the Japanese surname Abe stayed uppercase (`ABE` instead of `Abe`). Removed from the acronym list; the surname now wins. Found by the new collision invariant test.
 
 ### Changed
 
-- Documentation: replaced the `< 10KB` size claim with the measured `~4KB` (minified + gzip), and corrected the CiteMe product descriptions (style count, database list, and shipped surfaces).
+- Documentation: replaced the `< 10KB` size claim with the measured `~5KB` (minified + gzip), and corrected the CiteMe product descriptions (style count, database list, and shipped surfaces).
 
 ### Notes
 

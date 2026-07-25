@@ -44,7 +44,7 @@ A ABNT atualizou as normas de citacoes e referencias:
 2. Requer uma lista de acronimos protegidos (IBGE, USP, UNESCO, etc.)
 3. Requer heuristicas para detectar acronimos desconhecidos
 
-Este pacote resolve esse problema com **zero dependencias** e **~4KB** (minificado + gzip).
+Este pacote resolve esse problema com **zero dependencias** e **~5KB** (minificado + gzip).
 
 ## Instalacao
 
@@ -260,7 +260,7 @@ isBrazilianSuffix('Silva');   // false
 
 ```typescript
 import {
-  PROTECTED_ACRONYMS,   // Set<string> - 150+ siglas brasileiras
+  PROTECTED_ACRONYMS,   // Set<string> - 379 siglas (BR + internacionais)
   SHORT_SURNAMES,       // Set<string> - Sobrenomes curtos (LEE, WU, LIMA, etc.)
   BRAZILIAN_SUFFIXES,   // Set<string> - Agnomes (FILHO, NETO, JUNIOR, etc.)
   PORTUGUESE_PARTICLES, // Set<string> - Particulas (da, de, do, das, dos, e)
