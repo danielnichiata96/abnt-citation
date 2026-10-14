@@ -31,7 +31,7 @@
 ABNT (Brazilian Association of Technical Standards) updated citation and reference standards:
 
 - **NBR 10520:2023** - Changed how author names appear in citations
-- **NBR 6023:2025** - Updated reference rules (ISSN optional, "ca." in italics, etc.)
+- **NBR 6023:2025** - Third edition of the references standard (21 May 2025), replacing the 2018 one. Changes include ISSN becoming a complementary element, e-location for electronic articles and "julgado em" for case law (ECA-USP and UFU library guides)
 
 | Author Type | Before (2002) | After (2023/2025) |
 |------------|---------------|-------------------|
@@ -108,9 +108,31 @@ postProcessABNT2023('(SILVA, 2023, p. 45)', true);
 postProcessABNT2023('(SILVA apud SANTOS, 2023)', true);
 // -> "(Silva apud Santos, 2023)"
 
-// Bibliography (isInText = false) - only formats et al.
+// Bibliography (isInText = false): et al. in italic, plus NBR 6023 rules
+// the CSL style does not apply
 postProcessABNT2023('SILVA, J. et al. Title. 2023.', false);
 // -> "SILVA, J. <i>et al.</i> Title. 2023."
+
+postProcessABNT2023('Title. [S.l.: S.n.], 1981.', false);
+// -> "Title. [<i>S. l.</i>: <i>s. n.</i>], 1981."
+
+postProcessABNT2023('Disponível em: <https://example.br>. Acesso em: 1 jan. 2025.', false);
+// -> "Disponível em: https://example.br. Acesso em: 1 jan. 2025."
+```
+
+In the bibliography, post-processing:
+- normalizes *sine loco* and *sine nomine* to `[S. l.]`, `[s. n.]` and `[S. l.: s. n.]`, with the abbreviations in italic. The case of the "S" in *sine loco* is kept, because it depends on its position in the reference;
+- removes the `< >` around the address after "Disponível em:", which NBR 6023 stopped using in 2018.
+
+#### `formatTitleEntryABNT(title: string): string`
+
+Formats the title used as the entry of a reference without author: first word in uppercase and, when it is an article or a monosyllabic function word (preposition, contraction, conjunction), the next word as well. CSL cannot express this rule, so apply it before formatting an item without author:
+
+```typescript
+formatTitleEntryABNT('Os grandes clássicos das poesias líricas');
+// -> "OS GRANDES clássicos das poesias líricas"
+formatTitleEntryABNT('Em busca de um sonho'); // -> "EM BUSCA de um sonho"
+formatTitleEntryABNT('Dois estudos sobre linguagem'); // -> "DOIS estudos sobre linguagem"
 ```
 
 #### `formatEtAl(): string`

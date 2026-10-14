@@ -1,6 +1,6 @@
 # Limitações do Parser de Nomes ABNT
 
-Este documento lista todas as limitações conhecidas do parser de nomes para citações ABNT NBR 6023:2018.
+Este documento lista todas as limitações conhecidas do parser de nomes para citações e referências ABNT (NBR 10520:2023 e NBR 6023:2025).
 
 ## Status de Conformidade
 

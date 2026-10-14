@@ -28,6 +28,7 @@ export {
   postProcessABNT2023,
   formatEtAl,
   formatCirca,
+  formatTitleEntryABNT,
 } from './formatter';
 
 // Institutional / corporate author detection

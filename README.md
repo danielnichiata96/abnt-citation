@@ -31,7 +31,7 @@
 A ABNT atualizou as normas de citacoes e referencias:
 
 - **NBR 10520:2023** - Mudou como nomes de autores aparecem em citacoes
-- **NBR 6023:2025** - Atualizou regras para referencias (ISSN opcional, "ca." em italico, etc.)
+- **NBR 6023:2025** - Terceira edicao da norma de referencias (21/05/2025), que substitui a de 2018. Entre as mudancas: ISSN passa a elemento complementar, e-localizacao em artigos eletronicos e "julgado em" na jurisprudencia (guias das bibliotecas da ECA-USP e da UFU)
 
 | Tipo de autor | Antes (2002) | Depois (2023/2025) |
 |--------------|--------------|---------------------|
@@ -108,9 +108,31 @@ postProcessABNT2023('(SILVA, 2023, p. 45)', true);
 postProcessABNT2023('(SILVA apud SANTOS, 2023)', true);
 // -> "(Silva apud Santos, 2023)"
 
-// Bibliografia (isInText = false) - apenas formata et al.
+// Bibliografia (isInText = false): et al. em italico e regras da NBR 6023
+// que o estilo CSL nao aplica
 postProcessABNT2023('SILVA, J. et al. Titulo. 2023.', false);
 // -> "SILVA, J. <i>et al.</i> Titulo. 2023."
+
+postProcessABNT2023('Titulo. [S.l.: S.n.], 1981.', false);
+// -> "Titulo. [<i>S. l.</i>: <i>s. n.</i>], 1981."
+
+postProcessABNT2023('Disponivel em: <https://exemplo.br>. Acesso em: 1 jan. 2025.', false);
+// -> "Disponivel em: https://exemplo.br. Acesso em: 1 jan. 2025."
+```
+
+Na bibliografia, o pos-processamento:
+- normaliza *sine loco* e *sine nomine* para `[S. l.]`, `[s. n.]` e `[S. l.: s. n.]`, com as abreviaturas em italico. O caso do "S" de *sine loco* e mantido, porque depende da posicao na referencia;
+- remove os sinais `< >` em volta do endereco depois de "Disponivel em:", que a NBR 6023 deixou de usar em 2018.
+
+#### `formatTitleEntryABNT(title: string): string`
+
+Formata o titulo usado como entrada de uma referencia sem autoria: primeira palavra em maiusculas e, quando ela e artigo ou palavra monossilabica (preposicao, contracao, conjuncao), tambem a seguinte. O CSL nao consegue expressar essa regra, entao aplique antes de formatar um item sem autor:
+
+```typescript
+formatTitleEntryABNT('Os grandes classicos das poesias liricas');
+// -> "OS GRANDES classicos das poesias liricas"
+formatTitleEntryABNT('Em busca de um sonho'); // -> "EM BUSCA de um sonho"
+formatTitleEntryABNT('Dois estudos sobre linguagem'); // -> "DOIS estudos sobre linguagem"
 ```
 
 #### `formatEtAl(): string`

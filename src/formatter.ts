@@ -129,6 +129,89 @@ export function formatCirca(): string {
 }
 
 /**
+ * Words that, at the start of a title entry, are uppercased together with the
+ * following word: definite and indefinite articles, and monosyllabic function
+ * words (prepositions, contractions, conjunctions). NBR 6023 asks for "a
+ * primeira palavra do título com letras maiúsculas, incluindo artigo e palavra
+ * monossilábica" (Bibliotecas UFU, 2025). Numerals and content words count as
+ * the first word on their own: "DOIS estudos sobre linguagem" (IEL-Unicamp, 2025).
+ */
+const TITLE_ENTRY_LEADING_WORDS = new Set([
+  // Portuguese articles
+  'o', 'a', 'os', 'as', 'um', 'uma', 'uns', 'umas',
+  // Portuguese monosyllabic prepositions, contractions and conjunctions
+  'em', 'no', 'na', 'nos', 'nas', 'de', 'do', 'da', 'dos', 'das', 'ao', 'aos', 'à', 'às',
+  'num', 'numa', 'por', 'com', 'sem', 'sob', 'e', 'ou', 'se', 'que',
+  // Articles of other languages common in Brazilian bibliographies
+  'the', 'an', 'el', 'la', 'los', 'las', 'un', 'una', 'le', 'les', 'il', 'lo', 'gli',
+  'der', 'die', 'ein', 'eine',
+]);
+
+/**
+ * Formats the title used as the entry element of a reference without author,
+ * per ABNT NBR 6023: the first word in uppercase and, when it is an article
+ * or a monosyllabic function word, the next word as well. CSL cannot express
+ * this, so call it on the title before formatting an item that has no author.
+ *
+ * @example
+ * formatTitleEntryABNT("Os grandes clássicos das poesias líricas")
+ * // "OS GRANDES clássicos das poesias líricas"
+ * formatTitleEntryABNT("Em busca de um sonho") // "EM BUSCA de um sonho"
+ * formatTitleEntryABNT("Dois estudos sobre linguagem") // "DOIS estudos sobre linguagem"
+ */
+export function formatTitleEntryABNT(title: string): string {
+  const parts = title.split(/(\s+)/);
+  const wordIndexes = parts.flatMap((part, index) => (part.trim() ? [index] : []));
+  if (wordIndexes.length === 0) return title;
+
+  const [first, second] = wordIndexes;
+  parts[first] = parts[first].toUpperCase();
+
+  const bareFirst = parts[first].toLowerCase().replace(/[^\p{L}]/gu, '');
+  if (second !== undefined && TITLE_ENTRY_LEADING_WORDS.has(bareFirst)) {
+    parts[second] = parts[second].toUpperCase();
+  }
+
+  return parts.join('');
+}
+
+const ITALIC_OPEN = '(?:<i>|<em>|<span style="font-style: ?italic;?">)';
+const ITALIC_CLOSE = '(?:<\\/i>|<\\/em>|<\\/span>)';
+const SINE_BRACKET = '\\[\\s*[Ss]\\.\\s*[ln]\\.(?:\\s*:\\s*[Ss]\\.\\s*n\\.)?\\s*\\]';
+
+/**
+ * Normalizes sine loco / sine nomine to "[S. l.]", "[s. n.]" and
+ * "[S. l.: s. n.]", with the abbreviations in italic (NBR 6023; Bibliotecas
+ * UFU, 2025). The case of the "S" in sine loco is kept, because it depends on
+ * its position in the reference. Idempotent.
+ */
+function normalizeSineLocoNomine(text: string): string {
+  return text
+    // Unwrap italic markup around the whole bracket, as citeproc (<i>) and the
+    // Wasm engine (<span>, sometimes including the trailing colon) emit it.
+    .replace(new RegExp(`${ITALIC_OPEN}(${SINE_BRACKET}(?:\\s*:\\s*)?)${ITALIC_CLOSE}`, 'g'), '$1')
+    .replace(/\[\s*([Ss])\.\s*l\.\s*:\s*[Ss]\.\s*n\.\s*\]/g, (_match, s) => `[<i>${s}. l.</i>: <i>s. n.</i>]`)
+    .replace(/\[\s*([Ss])\.\s*l\.\s*\]/g, (_match, s) => `[<i>${s}. l.</i>]`)
+    .replace(/\[\s*[Ss]\.\s*n\.\s*\]/g, '[<i>s. n.</i>]');
+}
+
+const AVAILABLE_AT = 'Dispon[ií]vel em:\\s*';
+
+/**
+ * Removes the angle brackets around online addresses after "Disponível em:".
+ * NBR 6023:2018 dropped them, but the community ABNT CSL style still emits them.
+ */
+function removeUrlAngleBrackets(text: string): string {
+  return text
+    // Wasm engine: literal brackets around a link anchor
+    .replace(new RegExp(`(${AVAILABLE_AT})<(<a\\s[^>]*>[\\s\\S]*?<\\/a>)>`, 'g'), '$1$2')
+    // citeproc: escaped brackets
+    .replace(new RegExp(`(${AVAILABLE_AT})(?:&lt;|&#60;)([\\s\\S]*?)(?:&gt;|&#62;)`, 'g'), '$1$2')
+    // Plain text
+    .replace(new RegExp(`(${AVAILABLE_AT})<((?:https?|ftp):\\/\\/[^\\s>]+)>`, 'g'), '$1$2');
+}
+
+/**
  * Post-processes a formatted ABNT citation to apply 2023 rules.
  * This is designed to be called after citation-js formats the citation.
  *
@@ -250,6 +333,12 @@ export function postProcessABNT2023(citation: string, isInText: boolean): string
         return `(${formatted1}${etAlPart1} apud ${formatted2}${etAlPart2}, ${year})`;
       }
     );
+  }
+
+  // Reference-list rules from NBR 6023 that the CSL style does not apply
+  if (!isInText) {
+    result = normalizeSineLocoNomine(result);
+    result = removeUrlAngleBrackets(result);
   }
 
   // Format "et al." to italic (if not already formatted with HTML or markdown)

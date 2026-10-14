@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **`formatTitleEntryABNT(title)`** - formats the title used as the entry of a reference without author: first word in uppercase, plus the next word when the first is an article or a monosyllabic function word ("OS GRANDES clássicos", "EM BUSCA de um sonho", "DOIS estudos"). CSL cannot express this rule.
+
+### Fixed
+
+- **Sine loco / sine nomine** - `postProcessABNT2023(text, false)` normalizes `[S.l.]`, `[s.n.]` and `[S.l.: S.n.]` to `[S. l.]`, `[s. n.]` and `[S. l.: s. n.]` with the abbreviations in italic, and unwraps the italic that citeproc (`<i>`) and the Wasm engine (`<span>`) put around the whole bracket.
+- **URL angle brackets** - `postProcessABNT2023(text, false)` removes the `< >` around addresses after "Disponível em:" (plain, HTML-escaped, or around a link anchor). NBR 6023 dropped them in 2018, but the community ABNT CSL style still emits them.
+- **README** - the NBR 6023:2025 summary now lists changes confirmed by university library guides (ECA-USP, UFU) instead of an unsourced list.
+
+Rules checked against the 2025 guides of Bibliotecas UFU, Biblioteca IEL-Unicamp and Biblioteca IE-Unicamp.
+
 ## [1.4.0] - 2026-07-25
 
 ### Added
