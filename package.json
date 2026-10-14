@@ -33,7 +33,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/danielnichiata96/abnt-citation"
+    "url": "git+https://github.com/danielnichiata96/abnt-citation.git"
   },
   "homepage": "https://citeme.app",
   "bugs": {
