@@ -223,6 +223,8 @@ person authors in the same array (OpenAlex, Google Books, BDTD, Open Library).
 
 ### Brazilian Name Parser
 
+> **Name parser only, for the browser:** `import { extractFamilyName } from 'abnt-citation/names'` brings the name parser and institution detection without the ABNT formatter and the acronym list (~1.9 KB gzip, against ~5.3 KB for the whole package). The functions are the same as on the main entry.
+
 #### `parseNameToCsl(name: string, options?: ParseOptions): CslName`
 
 Converts a name to CSL format with support for Brazilian naming conventions:

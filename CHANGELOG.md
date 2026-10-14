@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **`abnt-citation/names`** - a subpath with the Brazilian name parser alone (`parseNameToCsl`, `extractFamilyName`, `extractGivenName`, the particle, suffix and title helpers and their constants) plus `isInstitutionalName`, without the ABNT formatter and the protected-acronym list: about 1.9 KB gzip, against 5.3 KB for the main entry. For browser code that only splits author names. Every export is also on the main entry, unchanged. Mapped for npm (`exports`, plus `typesVersions` for `moduleResolution: node`) and JSR (`jsr.json`).
+
 ## [1.5.0] - 2026-10-14
 
 ### Added

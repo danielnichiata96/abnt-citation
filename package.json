@@ -57,6 +57,23 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
+    },
+    "./names": {
+      "import": {
+        "types": "./dist/names.d.ts",
+        "default": "./dist/names.js"
+      },
+      "require": {
+        "types": "./dist/names.d.cts",
+        "default": "./dist/names.cjs"
+      }
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "names": [
+        "./dist/names.d.ts"
+      ]
     }
   },
   "files": [

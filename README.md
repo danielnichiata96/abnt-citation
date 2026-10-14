@@ -223,6 +223,8 @@ corporativos e pessoais no mesmo array (OpenAlex, Google Books, BDTD, Open Libra
 
 ### Parser de Nomes Brasileiros
 
+> **So o parser, no navegador:** `import { extractFamilyName } from 'abnt-citation/names'` traz o parser de nomes e a deteccao de instituicoes sem o formatador ABNT e a lista de siglas (~1,9 KB gzip, contra ~5,3 KB do pacote inteiro). As funcoes sao as mesmas da entrada principal.
+
 #### `parseNameToCsl(name: string, options?: ParseOptions): CslName`
 
 Converte nome para formato CSL com suporte a convencoes brasileiras:
